@@ -1,16 +1,17 @@
+import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
   return (
     <nav>
       <div id="nav-logo">
-        <a href="/">itsDita</a>
+        <NavLink to="/">itsDita</NavLink>
       </div>
       <div id="nav-links">
-        <a href="/about">About</a>
-        <a href="/portfolio">Portfolio</a>
-        <a href="/blog">Blog</a>
-        <a href="/notes">Notes</a>
+        <NavLink to="/about">About</NavLink>
+        <NavLink to="/portfolio">Portfolio</NavLink>
+        <NavLink to="/blog">Blog</NavLink>
+        <NavLink to="/notes">Notes</NavLink>
       </div>
     </nav>
   );
