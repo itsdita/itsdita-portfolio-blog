@@ -1,15 +1,24 @@
 import { useState } from 'react'
-import Navbar from './components/navbar/Navbar'
-import Blog from './components//blog/Blog'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Navbar from './pages/navbar/Navbar'
+import {Blog, Home} from './pages'
 import './App.css'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />
+  },
+  {
+    path: '/blog',
+    element: <Blog />
+  }
+])
 
 function App() {
 
   return (
-    <>
-    <Navbar />
-    <Blog />
-    </>
+    <RouterProvider router={router}/>
   )
 }
 
