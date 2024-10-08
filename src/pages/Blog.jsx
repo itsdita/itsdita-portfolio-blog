@@ -17,16 +17,22 @@ const db = getFirestore(app);
 export const loader = async () => {
   const blogPostsCollection = collection(db, "blogPosts");
   const blogPostsSnapshot = await getDocs(blogPostsCollection);
-  const blogPosts = blogPostsSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const blogPosts = blogPostsSnapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    // Convert Firestore Timestamp to Date object before returning
+    if (data.date) {
+      data.date = new Date(data.date.seconds * 1000);
+    }
+
+    return { id: doc.id, ...data };
+  });
+
   return blogPosts;
 };
 
 const Blog = () => {
   const posts = useLoaderData();
-  console.log(posts);
 
   return (
     <div>
@@ -36,7 +42,10 @@ const Blog = () => {
           posts.map((post) => (
             <li key={post.id}>
               <h2>{post.title}</h2>
-              <p>{post.content}</p>
+              <h3>{post.date.toLocaleString()} | {post.author}</h3>
+              <h4>{post.summary}</h4>
+              <p>{post.text}</p>
+              <p>likes: {post.likes}</p>
             </li>
           ))
         ) : (
