@@ -1,11 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { About, Blog, HomeLayout, Landing, Notes, Portfolio } from "./pages";
+import { About, Blog, ErrorPage, HomeLayout, Landing, Notes, Portfolio } from "./pages";
 import "./App.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
