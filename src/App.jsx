@@ -1,25 +1,38 @@
-import { useState } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Navbar from './pages/navbar/Navbar'
-import {Blog, Home} from './pages'
-import './App.css'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { About, Blog, Home, Landing, Notes, Portfolio } from "./pages";
+import "./App.css";
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />
+    path: "/",
+    element: <Home />,
+    children: [
+      {
+        path: "/",
+        element: <Landing />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "portfolio",
+        element: <Portfolio />,
+      },
+      {
+        path: "blog",
+        element: <Blog />,
+      },
+      {
+        path: "notes",
+        element: <Notes />,
+      },
+    ],
   },
-  {
-    path: '/blog',
-    element: <Blog />
-  }
-])
+]);
 
 function App() {
-
-  return (
-    <RouterProvider router={router}/>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;

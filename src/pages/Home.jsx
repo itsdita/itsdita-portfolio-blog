@@ -1,10 +1,11 @@
-import {Link} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
+import Navbar from './components/Navbar';
 
 export default function Blog() {
     return (
-      <div>
-        <h1>Home</h1>
-        <Link to="/blog">Blog</Link>
-      </div>
+      <>
+        <Navbar />
+        <Outlet/>
+      </>
     )
   }
