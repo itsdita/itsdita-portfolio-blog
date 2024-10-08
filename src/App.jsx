@@ -3,6 +3,8 @@ import { About, Blog, ErrorPage, HomeLayout, Landing, Notes, Portfolio } from ".
 import {loader as blogLoader} from "./pages/Blog.jsx";
 import "./App.css";
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",

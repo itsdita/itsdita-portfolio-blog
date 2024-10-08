@@ -1,16 +1,48 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { useLoaderData } from "react-router-dom";
 
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 export const loader = async () => {
-  return "something";
+  const blogPostsCollection = collection(db, "blogPosts");
+  const blogPostsSnapshot = await getDocs(blogPostsCollection);
+  const blogPosts = blogPostsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return blogPosts;
 };
 
 const Blog = () => {
-  const data = useLoaderData();
-  console.log(data); 
-  
+  const posts = useLoaderData();
+  console.log(posts);
+
   return (
     <div>
       <h1>Blog</h1>
+      <ul>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <li key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.content}</p>
+            </li>
+          ))
+        ) : (
+          <p>No blog posts found.</p>
+        )}
+      </ul>
     </div>
   );
 };
