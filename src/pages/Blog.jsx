@@ -8,7 +8,7 @@ const Blog = () => {
   const initialPosts = useLoaderData();
 
   const [posts, setPosts] = useState(initialPosts);
-  const [textVisible, setTextVisible] = useState(false);
+  const [textVisible, setTextVisible] = useState({});
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [summary, setSummary] = useState("");
@@ -52,6 +52,14 @@ const Blog = () => {
       console.error("Error adding document: ", err);
       setError("Failed to add the blog post. Please try again.");
     }
+  };
+
+  // Toggle text visibility for a specific post
+  const toggleTextVisibility = (postId) => {
+    setTextVisible((prevState) => ({
+      ...prevState,
+      [postId]: !prevState[postId], // Toggle the visibility for the specific post
+    }));
   };
 
   return (
@@ -108,12 +116,15 @@ const Blog = () => {
                   {post.date.toLocaleString()} | {post.author}
                 </h3>
                 <h4>{post.summary}</h4>
-                {textVisible && <p>{post.text}</p>}
+
+                {/* Only show the text if it's visible for this specific post */}
+                {textVisible[post.id] && <p>{post.text}</p>}
+
                 <button
                   className="btn"
-                  onClick={() => setTextVisible(!textVisible)}
+                  onClick={() => toggleTextVisibility(post.id)}
                 >
-                  {textVisible ? "Hide" : "Read more"}
+                  {textVisible[post.id] ? "Hide" : "Read more"}
                 </button>
                 <p>likes: {post.likes}</p>
               </li>
