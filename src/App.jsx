@@ -1,6 +1,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { About, Auth, Blog, ErrorPage, HomeLayout, Landing, Notes, Portfolio } from "./pages";
-import {loader as blogLoader} from "./pages/util/load-data.js";
+import {
+  About,
+  Auth,
+  Blog,
+  ErrorPage,
+  HomeLayout,
+  Landing,
+  Notes,
+  Portfolio,
+} from "./pages";
+import { loader as blogLoader } from "./pages/util/load-data.js";
+import { AuthProvider } from "./pages/util/auth-context.jsx";
 
 import "./App.css";
 
@@ -40,7 +50,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />;
+    </AuthProvider>
+  );
 }
 
 export default App;

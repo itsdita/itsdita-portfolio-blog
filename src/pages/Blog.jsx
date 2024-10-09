@@ -1,14 +1,13 @@
 import { collection, addDoc } from "firebase/firestore";
-//import { getAuth } from "firebase/auth";
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { db } from "./util/firebase.js";
+import { useAuth } from "./util/auth-context.jsx";
 
 const Blog = () => {
   const initialPosts = useLoaderData();
 
   const [posts, setPosts] = useState(initialPosts);
-
   const [textVisible, setTextVisible] = useState(false);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -16,17 +15,11 @@ const Blog = () => {
   const [text, setText] = useState("");
   const [error, setError] = useState(null);
 
+  const { isAdmin } = useAuth(); // Get admin status from AuthContext
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form behavior
-
-    // const auth = getAuth();
-    // const user = auth.currentUser;
-
-    // if (user) {
-    //   const uid = user.uid;
-    //   console.log("User ID: ", uid);
-    // }
 
     try {
       // Create a new post object from the form data
@@ -63,46 +56,48 @@ const Blog = () => {
 
   return (
     <>
-      <div id="new-blog-post" className="container">
-        <h2>New blog post</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label htmlFor="author">Author</label>
-          <input
-            type="text"
-            id="author"
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-          <label htmlFor="summary">Summary</label>
-          <input
-            type="text"
-            id="summary"
-            name="summary"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <label htmlFor="text">Text</label>
-          <textarea
-            id="text"
-            name="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          ></textarea>
-          <button className="btn" type="submit">
-            Submit
-          </button>
-        </form>
-      </div>
+      {isAdmin ? (
+        <div id="new-blog-post" className="container">
+          <h2>New blog post</h2>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <label htmlFor="author">Author</label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+            <label htmlFor="summary">Summary</label>
+            <input
+              type="text"
+              id="summary"
+              name="summary"
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+            />
+            <label htmlFor="text">Text</label>
+            <textarea
+              id="text"
+              name="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            ></textarea>
+            <button className="btn" type="submit">
+              Submit
+            </button>
+          </form>
+        </div>
+      ) : null}
       <div id="blog-posts-container">
         <ul>
           {posts.length > 0 ? (
