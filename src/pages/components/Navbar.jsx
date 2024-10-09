@@ -12,6 +12,7 @@ export default function Navbar() {
         <NavLink to="/portfolio">Portfolio</NavLink>
         <NavLink to="/blog">Blog</NavLink>
         <NavLink to="/notes">Notes</NavLink>
+        <NavLink to="/auth">Join</NavLink>
       </div>
     </nav>
   );
