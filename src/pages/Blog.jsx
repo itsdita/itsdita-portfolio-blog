@@ -1,15 +1,13 @@
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
+//import { getAuth } from "firebase/auth";
 import { useLoaderData } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { db } from "./util/firebase.js";
 
 const Blog = () => {
-  const posts = useLoaderData();
+  const initialPosts = useLoaderData();
+
+  const [posts, setPosts] = useState(initialPosts);
 
   const [textVisible, setTextVisible] = useState(false);
   const [title, setTitle] = useState("");
@@ -22,16 +20,26 @@ const Blog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form behavior
 
+    // const auth = getAuth();
+    // const user = auth.currentUser;
+
+    // if (user) {
+    //   const uid = user.uid;
+    //   console.log("User ID: ", uid);
+    // }
+
     try {
-      // Create a new blog post in Firestore
-      await addDoc(collection(db, "blogPosts"), {
+      // Create a new post object from the form data
+      const newPost = {
         title,
         author,
         summary,
         text,
         date: new Date(), // Current date as the post's date
-        likes: 0, // Initialize likes to 0 or any default value you prefer
-      });
+        likes: 0, // Initialize likes to 0
+      };
+      // Create a new blog post in Firestore
+      const docRef = await addDoc(collection(db, "blogPosts"), newPost);
 
       // Clear the form inputs after submission
       setTitle("");
@@ -40,12 +48,17 @@ const Blog = () => {
       setText("");
       setError(null); // Clear any previous error
 
+      // Update allPosts state
+      setPosts((prevPosts) => [
+        { id: docRef.id, ...newPost }, // Add the new post at the beginning of the list
+        ...prevPosts,
+      ]);
+
       alert("Blog post added successfully!"); // Notify the user of success
     } catch (err) {
       console.error("Error adding document: ", err);
       setError("Failed to add the blog post. Please try again.");
     }
-    window.location.reload(false);
   };
 
   return (
@@ -94,21 +107,21 @@ const Blog = () => {
         <ul>
           {posts.length > 0 ? (
             posts.map((post) => (
-                <li key={post.id} className="container">
-                  <h2>{post.title}</h2>
-                  <h3>
-                    {post.date.toLocaleString()} | {post.author}
-                  </h3>
-                  <h4>{post.summary}</h4>
-                  {textVisible && <p>{post.text}</p>}
-                  <button
-                    className="btn"
-                    onClick={() => setTextVisible(!textVisible)}
-                  >
-                    {textVisible ? "Hide" : "Read more"}
-                  </button>
-                  <p>likes: {post.likes}</p>
-                </li>
+              <li key={post.id} className="container">
+                <h2>{post.title}</h2>
+                <h3>
+                  {post.date.toLocaleString()} | {post.author}
+                </h3>
+                <h4>{post.summary}</h4>
+                {textVisible && <p>{post.text}</p>}
+                <button
+                  className="btn"
+                  onClick={() => setTextVisible(!textVisible)}
+                >
+                  {textVisible ? "Hide" : "Read more"}
+                </button>
+                <p>likes: {post.likes}</p>
+              </li>
             ))
           ) : (
             <p>No blog posts found.</p>
