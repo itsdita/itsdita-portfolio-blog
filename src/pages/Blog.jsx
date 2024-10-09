@@ -75,6 +75,7 @@ const Blog = () => {
       console.error("Error adding document: ", err);
       setError("Failed to add the blog post. Please try again.");
     }
+    window.location.reload(false);
   };
 
   return (
@@ -123,8 +124,7 @@ const Blog = () => {
         <ul>
           {posts.length > 0 ? (
             posts.map((post) => (
-              <div className="container">
-                <li key={post.id}>
+                <li key={post.id} className="container">
                   <h2>{post.title}</h2>
                   <h3>
                     {post.date.toLocaleString()} | {post.author}
@@ -139,7 +139,6 @@ const Blog = () => {
                   </button>
                   <p>likes: {post.likes}</p>
                 </li>
-              </div>
             ))
           ) : (
             <p>No blog posts found.</p>
