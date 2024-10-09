@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../util/auth-context.jsx";
 import "./Navbar.css";
 
 export default function Navbar() {
+  const { isAdmin } = useAuth();
   return (
     <nav>
       <div id="nav-logo">
@@ -12,7 +14,11 @@ export default function Navbar() {
         <NavLink to="/portfolio">Portfolio</NavLink>
         <NavLink to="/blog">Blog</NavLink>
         <NavLink to="/notes">Notes</NavLink>
-        <NavLink to="/auth">Join</NavLink>
+        {isAdmin?(
+          <NavLink to="/auth">Logout</NavLink>
+        ):(
+          <NavLink to="/auth">Join</NavLink>
+        )}
       </div>
     </nav>
   );

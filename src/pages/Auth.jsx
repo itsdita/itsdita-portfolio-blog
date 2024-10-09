@@ -1,8 +1,11 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, signOut} from "firebase/auth";
+import { useAuth } from "./util/auth-context.jsx";
 
 const provider = new GoogleAuthProvider();
 
 export default function Signup() {
+  const { isAdmin } = useAuth();
+
   const googleAuth = (e) => {
     e.preventDefault();
     const auth = getAuth();
@@ -22,11 +25,29 @@ export default function Signup() {
       });
   };
 
+  const handleLogout = async () => {
+    const auth = getAuth(); // Get the auth instance
+
+    try {
+      await signOut(auth); // Sign out the user
+      console.log("User signed out successfully");
+      // Optionally redirect or perform other actions after logout
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div className="container">
-      <button className="btn" onClick={googleAuth}>
-        Sign Up with Google
-      </button>
+      {isAdmin ? (
+        <button className="btn" onClick={handleLogout}>
+          Logout
+        </button>
+      ) : (
+        <button className="btn" onClick={googleAuth}>
+          Sign Up with Google
+        </button>
+      )}
     </div>
   );
 }
