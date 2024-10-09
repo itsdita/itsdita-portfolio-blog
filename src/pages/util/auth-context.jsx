@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("Authenticated User UID:", user.uid);
+        //console.log("Authenticated User UID:", user.uid);
         setUser(user);
         setIsAdmin(user.uid === adminUid); // Check if the user is an admin
       } else {
