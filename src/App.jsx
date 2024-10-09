@@ -1,9 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { About, Blog, ErrorPage, HomeLayout, Landing, Notes, Portfolio } from "./pages";
-import {loader as blogLoader} from "./pages/Blog.jsx";
+import { About, Auth, Blog, ErrorPage, HomeLayout, Landing, Notes, Portfolio } from "./pages";
+import {loader as blogLoader} from "./pages/util/load-data.js";
+
 import "./App.css";
-
-
 
 const router = createBrowserRouter([
   {
@@ -31,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "notes",
         element: <Notes />,
+      },
+      {
+        path: "auth",
+        element: <Auth />,
       },
     ],
   },
