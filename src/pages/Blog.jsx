@@ -3,6 +3,8 @@ import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { db } from "./util/firebase.js";
 import { useAuth } from "./util/auth-context.jsx";
+import TextEditor from "./components/TextEditor.jsx";
+import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
 
 const Blog = () => {
   const initialPosts = useLoaderData();
@@ -94,12 +96,7 @@ const Blog = () => {
               onChange={(e) => setSummary(e.target.value)}
             />
             <label htmlFor="text">Text</label>
-            <textarea
-              id="text"
-              name="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            ></textarea>
+            <TextEditor setText={setText} />
             <button className="btn" type="submit">
               Submit
             </button>
@@ -118,7 +115,13 @@ const Blog = () => {
                 <h4>{post.summary}</h4>
 
                 {/* Only show the text if it's visible for this specific post */}
-                {textVisible[post.id] && <p>{post.text}</p>}
+                {textVisible[post.id] && (
+                  <div className="blog-text-content"
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(post.text), // Sanitize and render HTML content
+                    }}
+                  />
+                )}
 
                 <button
                   className="btn"
