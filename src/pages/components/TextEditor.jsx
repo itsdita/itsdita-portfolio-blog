@@ -86,7 +86,7 @@ const TextEditor = ({ setText }) => {
 
   return (
     <div className="text-editor">
-      <div ref={editorRef} style={{ height: "300px" }}></div>
+      <div ref={editorRef} style={{ height: "200px" }}></div>
     </div>
   );
 };
