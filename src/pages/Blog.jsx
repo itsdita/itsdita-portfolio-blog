@@ -6,6 +6,7 @@ import { useAuth } from "./util/auth-context.jsx";
 import TextEditor from "./components/TextEditor.jsx";
 import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
 import "./Blog.css";
+import "quill/dist/quill.snow.css";
 import like from "../assets/like-icon.svg";
 import comment from "../assets/comment-icon.svg";
 
@@ -98,7 +99,6 @@ const Blog = () => {
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
             />
-            <label htmlFor="text">Text</label>
             <TextEditor setText={setText} />
             <button className="btn" type="submit">
               Submit
@@ -106,11 +106,12 @@ const Blog = () => {
           </form>
         </div>
       ) : null}
-      <div id="blog-posts-container">
+      <div id="blog-posts-container" className="ql-snow">
         <ul>
           {posts.length > 0 ? (
             posts.map((post) => (
               <li key={post.id} className="container">
+                <blockquote>test</blockquote>
                 <h2>{post.title}</h2>
                 <h4>
                   {post.date.toLocaleString()} | {post.author}
@@ -120,10 +121,9 @@ const Blog = () => {
                 {/* Only show the text if it's visible for this specific post */}
                 {textVisible[post.id] && (
                   <div
-                    className="blog-text-content"
+                    className="blog-text-content ql-editor"
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(post.text), // Sanitize and render HTML content
-                    }}
+                      __html: post.text}}
                   />
                 )}
                 <div className="likes-comments">

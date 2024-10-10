@@ -47,7 +47,7 @@ const TextEditor = ({ setText }) => {
   }, [setText, toolbarOptions]);
 
   return (
-    <div className="text-editor">
+    <div className="text-editor ql-editor">
       <div
         ref={editorRef}
         style={{ height: "200px" }}

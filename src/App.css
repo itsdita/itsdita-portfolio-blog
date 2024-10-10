@@ -52,7 +52,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-ul {
+ul, ol {
   list-style-type: none;
   padding: 0;
 }

@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut} from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithRedirect, signOut} from "firebase/auth";
 import { useAuth } from "./util/auth-context.jsx";
 
 const provider = new GoogleAuthProvider();
@@ -9,7 +9,7 @@ export default function Signup() {
   const googleAuth = (e) => {
     e.preventDefault();
     const auth = getAuth();
-    signInWithPopup(auth, provider)
+    signInWithRedirect(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -21,7 +21,7 @@ export default function Signup() {
         // ...
       })
       .catch((error) => {
-        console.error("Error during Goolge sign in: ", error);
+        console.error("Error during Google sign in: ", error);
       });
   };
 
