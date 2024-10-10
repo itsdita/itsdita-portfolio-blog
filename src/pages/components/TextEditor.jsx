@@ -55,10 +55,6 @@ const TextEditor = ({ setText }) => {
     // Handle text change events
     quillInstance.on("text-change", () => {
       let content = quillInstance.root.innerHTML;
-
-      // Remove wrapping <p> tags from the content
-      content = content.replace(/<\/?p>/g, "");
-
       setText(content); // Pass the updated content to the parent component
     });
 
@@ -89,9 +85,7 @@ const TextEditor = ({ setText }) => {
   };
 
   return (
-    <div>
-      <label>Editor Content</label>
-      {/* The div where Quill will be mounted */}
+    <div className="text-editor">
       <div ref={editorRef} style={{ height: "300px" }}></div>
     </div>
   );

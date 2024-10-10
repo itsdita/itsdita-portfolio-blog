@@ -1,0 +1,30 @@
+.blog-text-content p {
+    font-size: 1rem;
+    line-height: 1.2;
+    color: #333;
+    margin: 1rem 2rem;
+    text-align: justify;
+}
+.blog-text-content ol {
+    font-size: 1rem;
+    line-height: 1.2;
+    color: #333;
+    margin: 1rem 5rem;
+    text-align: justify;
+}
+form label {
+    text-align: left;
+}
+.likes-comments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem 2rem;
+}
+.likes, .comments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}

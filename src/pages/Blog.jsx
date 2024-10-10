@@ -5,6 +5,9 @@ import { db } from "./util/firebase.js";
 import { useAuth } from "./util/auth-context.jsx";
 import TextEditor from "./components/TextEditor.jsx";
 import DOMPurify from "dompurify"; // Import DOMPurify for sanitizing HTML
+import "./Blog.css";
+import like from "../assets/like-icon.svg";
+import comment from "../assets/comment-icon.svg";
 
 const Blog = () => {
   const initialPosts = useLoaderData();
@@ -109,27 +112,36 @@ const Blog = () => {
             posts.map((post) => (
               <li key={post.id} className="container">
                 <h2>{post.title}</h2>
-                <h3>
+                <h4>
                   {post.date.toLocaleString()} | {post.author}
-                </h3>
-                <h4>{post.summary}</h4>
+                </h4>
+                <h3>{post.summary}</h3>
 
                 {/* Only show the text if it's visible for this specific post */}
                 {textVisible[post.id] && (
-                  <div className="blog-text-content"
+                  <div
+                    className="blog-text-content"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(post.text), // Sanitize and render HTML content
                     }}
                   />
                 )}
-
+                <div className="likes-comments">
+                  <span className="likes">
+                    <object data={like} width="24px" height="24px"></object>
+                    <p>{post.likes}</p>
+                  </span>
+                  <span className="comments">
+                    <object data={comment} width="24px" height="24px"></object>
+                    <p>{post.comments}</p>
+                  </span>
+                </div>
                 <button
                   className="btn"
                   onClick={() => toggleTextVisibility(post.id)}
                 >
                   {textVisible[post.id] ? "Hide" : "Read more"}
                 </button>
-                <p>likes: {post.likes}</p>
               </li>
             ))
           ) : (
